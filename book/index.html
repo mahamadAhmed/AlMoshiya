@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="ar">
+
+<head>
+    <meta charset="utf-8">
+    <script>if (navigator.userAgent.match(/MSIE|Internet Explorer/i) || navigator.userAgent.match(/Trident\/7\..*?rv:11/i)) { var href = document.location.href; if (!href.match(/[?&]nowprocket/)) { if (href.indexOf("?") == -1) { if (href.indexOf("#") == -1) { document.location.href = href + "?nowprocket=1" } else { document.location.href = href.replace("#", "?nowprocket=1#") } } else { if (href.indexOf("#") == -1) { document.location.href = href + "&nowprocket=1" } else { document.location.href = href.replace("#", "&nowprocket=1#") } } } }</script>
+    <script>class RocketLazyLoadScripts { constructor() { this.v = "1.2.5.1", this.triggerEvents = ["keydown", "mousedown", "mousemove", "touchmove", "touchstart", "touchend", "wheel"], this.userEventHandler = this._triggerListener.bind(this), this.touchStartHandler = this._onTouchStart.bind(this), this.touchMoveHandler = this._onTouchMove.bind(this), this.touchEndHandler = this._onTouchEnd.bind(this), this.clickHandler = this._onClick.bind(this), this.interceptedClicks = [], this.interceptedClickListeners = [], this._interceptClickListeners(this), window.addEventListener("pageshow", e => { this.persisted = e.persisted, this.everythingLoaded && this._triggerLastFunctions() }), document.addEventListener("DOMContentLoaded", () => { this._preconnect3rdParties() }), this.delayedScripts = { normal: [], async: [], defer: [] }, this.trash = [], this.allJQueries = [] } _addUserInteractionListener(e) { if (document.hidden) { e._triggerListener(); return } this.triggerEvents.forEach(t => window.addEventListener(t, e.userEventHandler, { passive: !0 })), window.addEventListener("touchstart", e.touchStartHandler, { passive: !0 }), window.addEventListener("mousedown", e.touchStartHandler), document.addEventListener("visibilitychange", e.userEventHandler) } _removeUserInteractionListener() { this.triggerEvents.forEach(e => window.removeEventListener(e, this.userEventHandler, { passive: !0 })), document.removeEventListener("visibilitychange", this.userEventHandler) } _onTouchStart(e) { "HTML" !== e.target.tagName && (window.addEventListener("touchend", this.touchEndHandler), window.addEventListener("mouseup", this.touchEndHandler), window.addEventListener("touchmove", this.touchMoveHandler, { passive: !0 }), window.addEventListener("mousemove", this.touchMoveHandler), e.target.addEventListener("click", this.clickHandler), this._disableOtherEventListeners(e.target, !0), this._renameDOMAttribute(e.target, "onclick", "rocket-onclick"), this._pendingClickStarted()) } _onTouchMove(e) { window.removeEventListener("touchend", this.touchEndHandler), window.removeEventListener("mouseup", this.touchEndHandler), window.removeEventListener("touchmove", this.touchMoveHandler, { passive: !0 }), window.removeEventListener("mousemove", this.touchMoveHandler), e.target.removeEventListener("click", this.clickHandler), this._disableOtherEventListeners(e.target, !1), this._renameDOMAttribute(e.target, "rocket-onclick", "onclick"), this._pendingClickFinished() } _onTouchEnd() { window.removeEventListener("touchend", this.touchEndHandler), window.removeEventListener("mouseup", this.touchEndHandler), window.removeEventListener("touchmove", this.touchMoveHandler, { passive: !0 }), window.removeEventListener("mousemove", this.touchMoveHandler) } _onClick(e) { e.target.removeEventListener("click", this.clickHandler), this._disableOtherEventListeners(e.target, !1), this._renameDOMAttribute(e.target, "rocket-onclick", "onclick"), this.interceptedClicks.push(e), e.preventDefault(), e.stopPropagation(), e.stopImmediatePropagation(), this._pendingClickFinished() } _replayClicks() { window.removeEventListener("touchstart", this.touchStartHandler, { passive: !0 }), window.removeEventListener("mousedown", this.touchStartHandler), this.interceptedClicks.forEach(e => { e.target.dispatchEvent(new MouseEvent("click", { view: e.view, bubbles: !0, cancelable: !0 })) }) } _interceptClickListeners(e) { EventTarget.prototype.addEventListenerBase = EventTarget.prototype.addEventListener, EventTarget.prototype.addEventListener = function (t, i, r) { "click" !== t || e.windowLoaded || i === e.clickHandler || e.interceptedClickListeners.push({ target: this, func: i, options: r }), (this || window).addEventListenerBase(t, i, r) } } _disableOtherEventListeners(e, t) { this.interceptedClickListeners.forEach(i => { i.target === e && (t ? e.removeEventListener("click", i.func, i.options) : e.addEventListener("click", i.func, i.options)) }), e.parentNode !== document.documentElement && this._disableOtherEventListeners(e.parentNode, t) } _waitForPendingClicks() { return new Promise(e => { this._isClickPending ? this._pendingClickFinished = e : e() }) } _pendingClickStarted() { this._isClickPending = !0 } _pendingClickFinished() { this._isClickPending = !1 } _renameDOMAttribute(e, t, i) { e.hasAttribute && e.hasAttribute(t) && (event.target.setAttribute(i, event.target.getAttribute(t)), event.target.removeAttribute(t)) } _triggerListener() { this._removeUserInteractionListener(this), "loading" === document.readyState ? document.addEventListener("DOMContentLoaded", this._loadEverythingNow.bind(this)) : this._loadEverythingNow() } _preconnect3rdParties() { let e = []; document.querySelectorAll("script[type=rocketlazyloadscript][data-rocket-src]").forEach(t => { let i = t.getAttribute("data-rocket-src"); if (i && 0 !== i.indexOf("data:")) { 0 === i.indexOf("//") && (i = location.protocol + i); try { let r = new URL(i).origin; r !== location.origin && e.push({ src: r, crossOrigin: t.crossOrigin || "module" === t.getAttribute("data-rocket-type") }) } catch (n) { } } }), e = [...new Map(e.map(e => [JSON.stringify(e), e])).values()], this._batchInjectResourceHints(e, "preconnect") } async _loadEverythingNow() { this.lastBreath = Date.now(), this._delayEventListeners(this), this._delayJQueryReady(this), this._handleDocumentWrite(), this._registerAllDelayedScripts(), this._preloadAllScripts(), await this._loadScriptsFromList(this.delayedScripts.normal), await this._loadScriptsFromList(this.delayedScripts.defer), await this._loadScriptsFromList(this.delayedScripts.async); try { await this._triggerDOMContentLoaded(), await this._pendingWebpackRequests(this), await this._triggerWindowLoad() } catch (e) { console.error(e) } window.dispatchEvent(new Event("rocket-allScriptsLoaded")), this.everythingLoaded = !0, this._waitForPendingClicks().then(() => { this._replayClicks() }), this._emptyTrash() } _registerAllDelayedScripts() { document.querySelectorAll("script[type=rocketlazyloadscript]").forEach(e => { e.hasAttribute("data-rocket-src") ? e.hasAttribute("async") && !1 !== e.async ? this.delayedScripts.async.push(e) : e.hasAttribute("defer") && !1 !== e.defer || "module" === e.getAttribute("data-rocket-type") ? this.delayedScripts.defer.push(e) : this.delayedScripts.normal.push(e) : this.delayedScripts.normal.push(e) }) } async _transformScript(e) { if (await this._littleBreath(), !0 === e.noModule && "noModule" in HTMLScriptElement.prototype) { e.setAttribute("data-rocket-status", "skipped"); return } return new Promise(t => { let i; function r() { (i || e).setAttribute("data-rocket-status", "executed"), t() } try { if (navigator.userAgent.indexOf("Firefox/") > 0 || "" === navigator.vendor) i = document.createElement("script"), [...e.attributes].forEach(e => { let t = e.nodeName; "type" !== t && ("data-rocket-type" === t && (t = "type"), "data-rocket-src" === t && (t = "src"), i.setAttribute(t, e.nodeValue)) }), e.text && (i.text = e.text), i.hasAttribute("src") ? (i.addEventListener("load", r), i.addEventListener("error", function () { i.setAttribute("data-rocket-status", "failed"), t() }), setTimeout(() => { i.isConnected || t() }, 1)) : (i.text = e.text, r()), e.parentNode.replaceChild(i, e); else { let n = e.getAttribute("data-rocket-type"), s = e.getAttribute("data-rocket-src"); n ? (e.type = n, e.removeAttribute("data-rocket-type")) : e.removeAttribute("type"), e.addEventListener("load", r), e.addEventListener("error", function () { e.setAttribute("data-rocket-status", "failed"), t() }), s ? (e.removeAttribute("data-rocket-src"), e.src = s) : e.src = "data:text/javascript;base64," + window.btoa(unescape(encodeURIComponent(e.text))) } } catch (a) { e.setAttribute("data-rocket-status", "failed"), t() } }) } async _loadScriptsFromList(e) { let t = e.shift(); return t && t.isConnected ? (await this._transformScript(t), this._loadScriptsFromList(e)) : Promise.resolve() } _preloadAllScripts() { this._batchInjectResourceHints([...this.delayedScripts.normal, ...this.delayedScripts.defer, ...this.delayedScripts.async], "preload") } _batchInjectResourceHints(e, t) { var i = document.createDocumentFragment(); e.forEach(e => { let r = e.getAttribute && e.getAttribute("data-rocket-src") || e.src; if (r) { let n = document.createElement("link"); n.href = r, n.rel = t, "preconnect" !== t && (n.as = "script"), e.getAttribute && "module" === e.getAttribute("data-rocket-type") && (n.crossOrigin = !0), e.crossOrigin && (n.crossOrigin = e.crossOrigin), e.integrity && (n.integrity = e.integrity), i.appendChild(n), this.trash.push(n) } }), document.head.appendChild(i) } _delayEventListeners(e) { let t = {}; function i(i, r) { return t[r].eventsToRewrite.indexOf(i) >= 0 && !e.everythingLoaded ? "rocket-" + i : i } function r(e, r) { var n; !t[n = e] && (t[n] = { originalFunctions: { add: n.addEventListener, remove: n.removeEventListener }, eventsToRewrite: [] }, n.addEventListener = function () { arguments[0] = i(arguments[0], n), t[n].originalFunctions.add.apply(n, arguments) }, n.removeEventListener = function () { arguments[0] = i(arguments[0], n), t[n].originalFunctions.remove.apply(n, arguments) }), t[e].eventsToRewrite.push(r) } function n(t, i) { let r = t[i]; t[i] = null, Object.defineProperty(t, i, { get: () => r || function () { }, set(n) { e.everythingLoaded ? r = n : t["rocket" + i] = r = n } }) } r(document, "DOMContentLoaded"), r(window, "DOMContentLoaded"), r(window, "load"), r(window, "pageshow"), r(document, "readystatechange"), n(document, "onreadystatechange"), n(window, "onload"), n(window, "onpageshow") } _delayJQueryReady(e) { let t; function i(t) { return e.everythingLoaded ? t : t.split(" ").map(e => "load" === e || 0 === e.indexOf("load.") ? "rocket-jquery-load" : e).join(" ") } function r(r) { if (r && r.fn && !e.allJQueries.includes(r)) { r.fn.ready = r.fn.init.prototype.ready = function (t) { return e.domReadyFired ? t.bind(document)(r) : document.addEventListener("rocket-DOMContentLoaded", () => t.bind(document)(r)), r([]) }; let n = r.fn.on; r.fn.on = r.fn.init.prototype.on = function () { return this[0] === window && ("string" == typeof arguments[0] || arguments[0] instanceof String ? arguments[0] = i(arguments[0]) : "object" == typeof arguments[0] && Object.keys(arguments[0]).forEach(e => { let t = arguments[0][e]; delete arguments[0][e], arguments[0][i(e)] = t })), n.apply(this, arguments), this }, e.allJQueries.push(r) } t = r } r(window.jQuery), Object.defineProperty(window, "jQuery", { get: () => t, set(e) { r(e) } }) } async _pendingWebpackRequests(e) { let t = document.querySelector("script[data-webpack]"); async function i() { return new Promise(e => { t.addEventListener("load", e), t.addEventListener("error", e) }) } t && (await i(), await e._requestAnimFrame(), await e._pendingWebpackRequests(e)) } async _triggerDOMContentLoaded() { this.domReadyFired = !0, await this._littleBreath(), document.dispatchEvent(new Event("rocket-readystatechange")), await this._littleBreath(), document.rocketonreadystatechange && document.rocketonreadystatechange(), await this._littleBreath(), document.dispatchEvent(new Event("rocket-DOMContentLoaded")), await this._littleBreath(), window.dispatchEvent(new Event("rocket-DOMContentLoaded")) } async _triggerWindowLoad() { await this._littleBreath(), document.dispatchEvent(new Event("rocket-readystatechange")), await this._littleBreath(), document.rocketonreadystatechange && document.rocketonreadystatechange(), await this._littleBreath(), window.dispatchEvent(new Event("rocket-load")), await this._littleBreath(), window.rocketonload && window.rocketonload(), await this._littleBreath(), this.allJQueries.forEach(e => e(window).trigger("rocket-jquery-load")), await this._littleBreath(); let e = new Event("rocket-pageshow"); e.persisted = this.persisted, window.dispatchEvent(e), await this._littleBreath(), window.rocketonpageshow && window.rocketonpageshow({ persisted: this.persisted }), this.windowLoaded = !0 } _triggerLastFunctions() { document.onreadystatechange && document.onreadystatechange(), window.onload && window.onload(), window.onpageshow && window.onpageshow({ persisted: this.persisted }) } _handleDocumentWrite() { let e = new Map; document.write = document.writeln = function (t) { let i = document.currentScript; i || console.error("WPRocket unable to document.write this: " + t); let r = document.createRange(), n = i.parentElement, s = e.get(i); void 0 === s && (s = i.nextSibling, e.set(i, s)); let a = document.createDocumentFragment(); r.setStart(a, 0), a.appendChild(r.createContextualFragment(t)), n.insertBefore(a, s) } } async _littleBreath() { Date.now() - this.lastBreath > 45 && (await this._requestAnimFrame(), this.lastBreath = Date.now()) } async _requestAnimFrame() { return document.hidden ? new Promise(e => setTimeout(e)) : new Promise(e => requestAnimationFrame(e)) } _emptyTrash() { this.trash.forEach(e => e.remove()) } static run() { let e = new RocketLazyLoadScripts; e._addUserInteractionListener(e) } } RocketLazyLoadScripts.run();</script>
+    <!-- Required meta tags -->
+    <!-- إعدادات العرض على الأجهزة المختلفة -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description"
+        content="شركة المشيّع للمحاماة والاستشارات القانونية - نقدم دعماً قانونياً متكاملاً بخبرة عميقة وفهم شامل لاحتياجات عملائنا." />
+    <meta name="keywords"
+        content="محاماة, استشارات قانونية, حقوق الأفراد, حقوق الشركات, العدالة, شركة المشيع, السعودية, الطائف" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large" />
+    <link rel="canonical" href="#" />
+
+    <!-- تحسين محرك البحث بواسطة رانك ماث -->
+    <title>شركة المشيّع للمحاماة والإستشارات القانونية | حماية حقوقك بأفضل الخدمات القانونية</title>
+
+    <!-- فافيكون وأيقونات لأجهزة Apple -->
+    <link rel="shortcut icon" href="../wp-content\uploads\شعار شركة المشيع.png" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="wp-content/uploads/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="wp-content/uploads/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="wp-content/uploads/favicon-16x16.png">
+
+    <!-- تحميل الخطوط مسبقاً لتحسين الأداء -->
+    <link rel="preload" as="font" href="../wp-content/themes/vat/assets/fonts/la-brands-400.woff2" crossorigin>
+    <link rel="preload" as="font" href="../wp-content/themes/vat/assets/fonts/la-regular-400.woff2" crossorigin>
+    <link rel="preload" as="font" href="../wp-content/themes/vat/assets/fonts/la-solid-900.woff2" crossorigin>
+    <link rel="preload" as="font" href="../wp-content/themes/vat/assets/fonts/jaz-font.woff2" crossorigin>
+
+    <!-- روابط CSS -->
+    <link rel="stylesheet" href="../css/about.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css">
+
+    <!-- Preconnect and DNS Prefetch لتحسين الأداء -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Organization",
+                "@id": "#",
+                "name": "شركة المشيّع للمحاماة والإستشارات القانونية",
+                "url": "#",
+                "logo": {
+                    "@type": "ImageObject",
+                    "@id": "../wp-content\uploads\شعار شركة المشيع.png",
+                    "url": "../wp-content\uploads\شعار شركة المشيع.png",
+                    "caption": "شعار شركة المشيّع للمحاماة",
+                    "inLanguage": "ar"
+                },
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "telephone": "+966505705206",
+                    "contactType": "customer service",
+                    "areaServed": "SA",
+                    "email": "ahmad0505705206@gmail.com"
+                },
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressCountry": "SA",
+                    "addressLocality": "الطائف"
+                }
+            },
+            {
+                "@type": "WebSite",
+                "@id": "#",
+                "url": "#",
+                "name": "شركة المشيّع للمحاماة والإستشارات القانونية",
+                "inLanguage": "ar",
+                "publisher": {
+                    "@id": "#"
+                }
+            }
+        ]
+    }
+    </script>
+
+    <noscript>
+        <style id="rocket-lazyload-nojs-css">
+            .rll-youtube-player,
+            [data-lazy-src] {
+                display: none !important;
+            }
+
+        </style>
+    </noscript>
+
+    <!-- Google Tag Manager -->
+    <script type="rocketlazyloadscript">
+    (function(w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+            'gtm.start': new Date().getTime(),
+            event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-MJ2G4FQ');
+    </script>
+    <!-- End Google Tag Manager -->
+
+</head>
+
+
+<body data-rsssl=1 class="home_page">
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MJ2G4FQ" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div class="mynavbar">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 right-navbar">
+                    <div class="logo">
+                        <a href="../index.html"><img width="383" height="500"
+                                src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20383%20500'%3E%3C/svg%3E"
+                                alt="" data-lazy-src="../wp-content\uploads\شعار شركة المشيع.png"><noscript><img
+                                    width="383" height="500" src="../wp-content\uploads\شعار شركة المشيع.png"
+                                    alt=""></noscript></a>
+                    </div>
+                    <div class="mynav">
+                        <ul class="main-menu">
+                            <li id="menu-item-108"
+                                class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-108">
+                                <a class="nav-link" href="../index.html" aria-current="page">الرئيسية</a>
+                            </li>
+                            <li id="menu-item-111"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-111"><a
+                                    class="nav-link" href="#">من نحن</a></li>
+                            <li id="menu-item-181"
+                                class="menu-item menu-item-type-post_type_archive menu-item-object-articles menu-item-181">
+                                <a class="nav-link" href="../articles/">المدونة</a>
+                            </li>
+                            <li id="menu-item-181"
+                                class="menu-item menu-item-type-post_type_archive menu-item-object-articles menu-item-181">
+                                <a class="nav-link" href="../profile.pdf">الملف التعريفي</a>
+                            </li>
+                            <li id="menu-item-109"
+                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-109"><a
+                                    class="nav-link" href="../contact/">اتصل بنا</a></li>
+
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end navbar -->
+    <!-- Sidebar -->
+    <div class="close-overlay"></div>
+    <div class="sidebar">
+        <div class="close-side"><i class="la la-times"></i></div>
+        <div class="side-content">
+            <ul class="main-menu">
+                <li
+                    class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-108">
+                    <a class="nav-link" href="../index.html" aria-current="page">الرئيسية</a>
+                </li>
+                <li id="menu-item-111" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-111"><a
+                        class="nav-link" href="#">من نحن</a></li>
+                <li id="menu-item-181"
+                    class="menu-item menu-item-type-post_type_archive menu-item-object-articles menu-item-181"><a
+                        class="nav-link" href="../articles/">المدونة</a></li>
+                <li id="menu-item-109" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-109"><a
+                        class="nav-link" href="../contact/">اتصل بنا</a></li>
+
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <!-- end sidbar -->
+    <!--Start Responsive menu -->
+    <div class="responsive-menu">
+        <div class="logo"> <a href="#"><img width="383" height="500"
+                    src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20383%20500'%3E%3C/svg%3E"
+                    alt="" data-lazy-src="../wp-content\uploads\شعار شركة المشيع.png"><noscript><img width="383"
+                        height="500" src="../wp-content\uploads\شعار شركة المشيع.png" alt=""></noscript></a></div>
+        <div>
+            <div class="menu" style="display:inline-flex;"> <span class="navbar-toggler-icon"><i
+                        class="la la-bars"></i></span></div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+    <section class="about about-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="about-img">
+                        <img width="460" height="425"
+                            src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20460%20425'%3E%3C/svg%3E"
+                            alt="" data-lazy-src="../wp-content\uploads\book.webp"><noscript><img width="460"
+                                height="425" src="../wp-content\uploads\book.webp" alt=""></noscript>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="about-info">
+                        <h4>احجز استشارتك الآن</h4>
+                        <p class="animate__animated animate__fadeInUp">
+                            في شركة المشيّع للمحاماة والاستشارات القانونية، ندرك أهمية الحصول على استشارة قانونية سريعة
+                            ومباشرة لتلبية احتياجاتك الفورية. من خلال استشارتنا الهاتفية، يمكنك التحدث مباشرة مع فريقنا
+                            من المحامين والخبراء المتخصصين للحصول على النصائح القانونية المصممة خصيصًا لحالتك.
+                        </p>
+                        <p class="animate__animated animate__fadeInUp">
+                            لماذا تحجز معنا؟
+                        </p>
+                        <ul>
+                            <li>احصل على استشارة قانونية من أي مكان دون الحاجة لزيارة الشركة.</li>
+                            <li>استشارة قانونية مباشرة عبر الهاتف لحل استفساراتك بسرعة.
+                            </li>
+                            <li> محامون وخبراء يتمتعون بخبرة واسعة في القضايا القانونية المختلفة.
+                            </li>
+                            <li>نصائح قانونية مصممة خصيصًا لتلبية احتياجاتك الشخصية أو المهنية.</li>
+                        </ul>
+                        <div class=" left-navbar">
+                            <div class="header-links">
+                                <div class="more"> <a href="https://wa.me/966505705206">احجز الآن! </a></div>
+
+                            </div>
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+    </section>
+    <!-- End about section -->
+
+
+
+
+
+    <footer>
+        <div class="fixed-icone">
+            <a href="https://wa.me/966505705206" target="_blank">
+                <i class="la la-whatsapp"></i>
+                <h6>الواتس اب</h6>
+            </a>
+
+        </div>
+        <div class="footer">
+            <div class="container">
+                <div class="row animate__animated animate__fadeInDown">
+                    <div class="col-lg-4">
+                        <div class="right-footer">
+                            <div class="footer-logo">
+                                <a href="#"><img width="371" height="500"
+                                        src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20371%20500'%3E%3C/svg%3E"
+                                        alt="" data-lazy-src="../wp-content\uploads\شعار شركة المشيع.png"><noscript><img
+                                            width="371" height="500" src="../wp-content\uploads\شعار شركة المشيع.png"
+                                            alt=""></noscript></a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="footer-links">
+                            <h4> تواصل معنا</h4>
+                            <ul>
+                                <li><i class="la la-map-marker-alt"></i>
+                                    <a
+                                        href="https://www.google.com/maps/place/%D8%B4%D8%B1%D9%83%D8%A9+%D8%A7%D9%84%D9%85%D8%B4%D9%8A%D8%B9+%D9%84%D9%84%D9%85%D8%AD%D8%A7%D9%85%D8%A7%D8%A9+%D9%88%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA+%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%D9%8A%D8%A9%E2%80%AD/@21.29093,40.443763,14z/data=!4m6!3m5!1s0x15e989fb219ced4b:0xb09a6b8ccf8908e!8m2!3d21.29093!4d40.4437632!16s%2Fg%2F11nrw7s4_r?hl=en&entry=ttu&g_ep=EgoyMDI0MTEwNi4wIKXMDSoASAFQAw%3D%3D">
+                                        <span class="key">العنوان : </span><span> المملكة العربية السعودية -
+                                            الطائف</span>
+                                    </a>
+                                </li>
+                                <li> <a href="mailto:ahmad0505705206@gmail.com">
+                                        <i class="la la-envelope"></i><span class="key">البـريد :
+                                        </span><span>ahmad0505705206@gmail.com</span></a></li>
+                                <li><a href="tel:+966505705206"> <i class="la la-phone"></i> <span class="key">الجوال :
+                                        </span><span class="mob-num">+966 50 570 5206</span>
+                                    </a></li>
+
+                            </ul>
+
+                            <div class="footer-sochial">
+
+                                <a href="https://wa.me/966505705206" target="_blank">
+                                    <i class="lab la-whatsapp"></i>
+
+                                </a>
+
+                                <a href="https://twitter.com/mushaya_law?lang=ar" target="_blank">
+                                    <i class="lab la-twitter"></i>
+
+                                </a>
+
+                                <a href="https://snapchat.com/t/Y9OgmNpC" target="_blank">
+                                    <i class="lab la-snapchat"></i>
+
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        </div>
+        <div class=" copy-right">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p> © جميع الحقوق محفوظه لدى شركة المشيّع 2024</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <!-- end footer section -->
+    <script type="rocketlazyloadscript"
+        data-rocket-src="../wp-content/themes/vat/assets/js/jquery-1.11.0.min.js"></script>
+    <script type="rocketlazyloadscript" data-rocket-src="../wp-content/themes/vat/assets/slick/slick.min.js"></script>
+    <script type="rocketlazyloadscript" data-minify="1"
+        data-rocket-src="../wp-content/themes/vat/assets/js/popper.js"></script>
+    <script type="rocketlazyloadscript" data-rocket-src="../wp-content/themes/vat/assets/js/bootstrap.min.js"></script>
+    <script type="rocketlazyloadscript"
+        data-rocket-src="../wp-content/themes/vat/assets/js/owl.carousel.min.js"></script>
+    <script type="rocketlazyloadscript"
+        data-rocket-src="../wp-content/themes/vat/assets/js/responsiveCarousel.min.js"></script>
+    <script type="rocketlazyloadscript"
+        data-rocket-src="../wp-content/themes/vat/assets/js/jquery.nice-select.min.js"></script>
+    <script type="rocketlazyloadscript" data-minify="1"
+        data-rocket-src="../wp-content/themes/vat/assets/js/jquery-ui.js"></script>
+    <script type="rocketlazyloadscript"
+        data-rocket-src="../wp-content/themes/vat/assets/js/jquery.mixitup.min.js"></script>
+    <script type="rocketlazyloadscript" data-rocket-src="../wp-content/themes/vat/assets/js/wow.min.js"></script>
+    <script type="rocketlazyloadscript" data-minify="1"
+        data-rocket-src="../wp-content/themes/vat/assets/js/jquery.fancybox.js"></script>
+    <script type="rocketlazyloadscript" data-minify="1"
+        data-rocket-src="../wp-content/themes/vat/assets/js/jquery.counterup.js"></script>
+    <script type="rocketlazyloadscript" data-minify="1"
+        data-rocket-src="../wp-content/themes/vat/assets/js/waypoints.js"></script>
+    <script type="rocketlazyloadscript" data-minify="1"
+        data-rocket-src="../wp-content/themes/vat/assets/js/main.js"></script>
+    <script type="rocketlazyloadscript" data-rocket-type="text/javascript">
+$('.main-menu li a').addClass('nav-link')
+var divs = $(".p_gal");
+for(var i = 0; i < divs.length; i+=4) {
+divs.slice(i, i+4).wrapAll("<div class='item'><div class='row'></div></div>");
+}
+
+
+// $('.sub-menu').addClass('row')
+
+
+
+
+// var lis = $(".sub-menu li");
+// for(var i = 0; i < lis.length; i+=3) {
+// lis.slice(i, i+3).wrapAll("<div class='col-lg-3'></div>");
+// }
+
+
+
+
+
+
+
+$('#o_serv').empty();
+$('#o_serv').append('<option>---</option>');
+$("#accordion .card").each(function()
+{
+ $('#o_serv').append('<option value="'+$(this).find('.ss_name').text()+'">'+$(this).find('.ss_name').text()+'</option>');
+});
+
+
+</script>
+
+
+    /*
+    <![CDATA[ */
+"use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+/* ]]> */
+    </script>
+    <script type="text/javascript" id="rocket-preload-links-js-extra">
+        /* <![CDATA[ */
+        var RocketPreloadLinksConfig = { "excludeUris": "\/(?:.+\/)?feed(?:\/(?:.+\/?)?)?$|\/(?:.+\/)?embed\/|\/(index.php\/)?(.*)wp-json(\/.*|$)|\/refer\/|\/go\/|\/recommend\/|\/recommends\/", "usesTrailingSlash": "1", "imageExt": "jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php", "fileExt": "jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php|html|htm", "siteUrl": "", "onHoverDelay": "100", "rateThrottle": "3" };
+        /* ]]> */
+    </script>
+    <script type="rocketlazyloadscript" data-rocket-type="text/javascript" id="rocket-preload-links-js-after">
+/* <![CDATA[ */
+(function() {
+"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+}());
+/* ]]> */
+</script>
+    <script>window.lazyLoadOptions = [{ elements_selector: "img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]", data_src: "lazy-src", data_srcset: "lazy-srcset", data_sizes: "lazy-sizes", class_loading: "lazyloading", class_loaded: "lazyloaded", threshold: 300, callback_loaded: function (element) { if (element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible") { if (element.classList.contains("lazyloaded")) { if (typeof window.jQuery != "undefined") { if (jQuery.fn.fitVids) { jQuery(element).parent().fitVids() } } } } } }, { elements_selector: ".rocket-lazyload", data_src: "lazy-src", data_srcset: "lazy-srcset", data_sizes: "lazy-sizes", class_loading: "lazyloading", class_loaded: "lazyloaded", threshold: 300, }]; window.addEventListener('LazyLoad::Initialized', function (e) {
+            var lazyLoadInstance = e.detail.instance; if (window.MutationObserver) {
+                var observer = new MutationObserver(function (mutations) {
+                    var image_count = 0; var iframe_count = 0; var rocketlazy_count = 0; mutations.forEach(function (mutation) {
+                        for (var i = 0; i < mutation.addedNodes.length; i++) {
+                            if (typeof mutation.addedNodes[i].getElementsByTagName !== 'function') { continue }
+                            if (typeof mutation.addedNodes[i].getElementsByClassName !== 'function') { continue }
+                            images = mutation.addedNodes[i].getElementsByTagName('img'); is_image = mutation.addedNodes[i].tagName == "IMG"; iframes = mutation.addedNodes[i].getElementsByTagName('iframe'); is_iframe = mutation.addedNodes[i].tagName == "IFRAME"; rocket_lazy = mutation.addedNodes[i].getElementsByClassName('rocket-lazyload'); image_count += images.length; iframe_count += iframes.length; rocketlazy_count += rocket_lazy.length; if (is_image) { image_count += 1 }
+                            if (is_iframe) { iframe_count += 1 }
+                        }
+                    }); if (image_count > 0 || iframe_count > 0 || rocketlazy_count > 0) { lazyLoadInstance.update() }
+                }); var b = document.getElementsByTagName("body")[0]; var config = { childList: !0, subtree: !0 }; observer.observe(b, config)
+            }
+        }, !1)</script>
+    <script data-no-minify="1" async
+        src="../wp-content/plugins/wp-rocket/assets/js/lazyload/17.8.3/lazyload.min.js"></script>
+
+
+    <script>function lazyLoadThumb(e, alt) { var t = '<img data-lazy-src="https://i.ytimg.com/vi_webp/ID/hqdefault.webp" alt="" width="480" height="360"><noscript><img src="https://i.ytimg.com/vi_webp/ID/hqdefault.webp" alt="" width="480" height="360"></noscript>', a = '<button class="play" aria-label="play Youtube video"></button>'; t = t.replace('alt=""', 'alt="' + alt + '"'); return t.replace("ID", e) + a } function lazyLoadYoutubeIframe() { var e = document.createElement("iframe"), t = "ID?autoplay=1"; t += 0 === this.parentNode.dataset.query.length ? '' : '&' + this.parentNode.dataset.query; e.setAttribute("src", t.replace("ID", this.parentNode.dataset.src)), e.setAttribute("frameborder", "0"), e.setAttribute("allowfullscreen", "1"), e.setAttribute("allow", "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"), this.parentNode.parentNode.replaceChild(e, this.parentNode) } document.addEventListener("DOMContentLoaded", function () { var e, t, p, a = document.getElementsByClassName("rll-youtube-player"); for (t = 0; t < a.length; t++)e = document.createElement("div"), e.setAttribute("data-id", a[t].dataset.id), e.setAttribute("data-query", a[t].dataset.query), e.setAttribute("data-src", a[t].dataset.src), e.innerHTML = lazyLoadThumb(a[t].dataset.id, a[t].dataset.alt), a[t].appendChild(e), p = e.querySelector('.play'), p.onclick = lazyLoadYoutubeIframe });</script>
+</body>
+
+</html>
